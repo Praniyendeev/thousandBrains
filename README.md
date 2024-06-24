@@ -3,7 +3,7 @@
 An experimental model architecture inspired by the Thousand Brains Theory by Jeff Hawkins.
 
 Concepts and Ideas
-1. Recursive Neuron Replacements in ANN
+1. Recursive Neuron Replacements in ANN\\
 Units are recursive neuron replacements in an artificial neural network (ANN) that condition the sparsity similar to heads in multi-head attention (MHA).
 Introducing leakiness horizontally across units to allow for the passing of information.
 Investigate if this approach is theoretically different from the sparse network used by Numenta on MNIST.
