@@ -46,9 +46,12 @@ class LayerList(nn.Module):
 
 
 class Unit(nn.Module):
-    def __init__(self, dim, depth=None, sub_dim=2, sub_depth=2, bias=False):
+    def __init__(self, dim, depth, sub_dim=None, sub_depth=None, bias=False):
         super().__init__()
-
+        if not sub_dim:
+            sub_dim = dim
+        if not sub_depth:
+            sub_depth = depth
         self.input = nn.Linear(dim * sub_dim, dim * sub_dim, bias=bias)
         self.layers = nn.ModuleList(
             [LayerList(dim, depth, sub_dim, sub_depth, bias) for d in range(depth)]
