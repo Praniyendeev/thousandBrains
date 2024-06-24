@@ -1,30 +1,43 @@
 # thousandBrains
-An experimental model architecture inspired by the thousand brains theory by Jeff Hawkins.
 
+An experimental model architecture inspired by the Thousand Brains Theory by Jeff Hawkins.
 
-- units are recursive neuron replacements in a ANN, that condition the sparsity similar to heads int MHA.
-- can leakines be intoduced horizontally across units to allow for passing of information?
-- is this even theoretical different from the sparse network used by numenta on MNIST
+Concepts and Ideas
+1. Recursive Neuron Replacements in ANN
+Units are recursive neuron replacements in an artificial neural network (ANN) that condition the sparsity similar to heads in multi-head attention (MHA).
+Introducing leakiness horizontally across units to allow for the passing of information.
+Investigate if this approach is theoretically different from the sparse network used by Numenta on MNIST.
+2. Reinforcement Learning Oriented Framework
+Explore if weight updates from loss can be completely updated in terms of reward for only "fired" neurons.
+This likely requires a definition for "fired" for each neuron.
+Would this have an effect similar to L1 loss?
+ANNs only update when the target is missed. If the prediction is correct, the loss is essentially zero, leading to no significant update without momentum terms. However, in this case, the weights need to be strengthened.
+A simple strategy of adding an additional term proportional to activation may work, similar to ReLU.
+Sigmoid and tanh functions try to emulate firing behavior, but ReLU performs better because the updates are allowed to be proportional to the input, thus strengthening proportionally as well.
+Aim for strengthening of all inputs to a neuron if they are received simultaneously, eliminating the concept of time.
+3. Timing in Biological Neural Networks
+Timing is crucial in biological neural networks, where neurons use spiking frequency and timings to encode continuous signals.
+Can timing be modeled without explicitly using timing, like the transition from RNN to transformer architectures?
+How do self-feedback loops/control signals fit into this (e.g., Mamba and TransformerFAM)?
+4. Graph Neural Network Architectures
+Explore if GNN-type architectures can help in modeling time steps and emulating the propagation of data between neurons.
+Introduce learnable delay parameters between neurons to weight the message-passing information.
+5. Auxiliary Branches in YOLOv9
+YOLOv9 uses an auxiliary branch to propagate more information-rich gradients. Investigate if multiple auxiliary branches can improve propagation flow.
+6. Learnable Normalization
+Implement learnable normalization with an overseeing neuron for each layer that acts as an auxiliary backbone and controls short-term activations based on long-term knowledge.
+This neuron learns during training and conditions based on all seen data thus far.
+Similar to batch or layer normalization.
+In teacher-student models, a slow but identical architecture generates targets (pseudo self-predictions).
+7. Masked Prediction
+Determine if masked prediction is the optimal auxiliary/pseudo task for learning multimodal information.
+8. Recurrent Block Structure
+Implement a structure where for i in range(rec): x=block(x), essentially forming an RNN.
+Implementation
+Organize and structure the above concepts into a cohesive project that can be shared on GitHub. Ensure each idea is well-documented with the necessary theoretical background, implementation details, and potential experimental setups.
+9. Complex valued Networks, Physics Inspired Networks
+As mentioned in 3. Timing is crucial in BNNs, Can complex networks model the phase information hence timing without specifically requiring a RNN like approach. 
 
+Implementation:
 
-- RL oriented framework can the weight updates from loss be completely updated in terms of reward for only "fired" neurons.
-- Probably requires a defintion for fired for each neuron? Would this have an effect similar to L1 loss?
-- ANNs infact only update based on when the target is missed. If the prediction is right, the loss is essentially zero and not a significant update without momentum terms. However, in this case the weights have to be strengthened. Will a simple strategy of adding an additional term proportional to activation work? LOL this is RELU. Sigmoid and tanh try to emulate firing behvaiour but relu perform better because the updates are allowed to be proportional to the input, which impacts teh update as well proportionally, thus strengthening also proportionally?
-You want stengthening of all input to a neuron if they are all recieved at same time, no concept of time.
-
-
-- timing is crucial in BNNs and its been proven that neurons use spiking frequency and timings to encode continuous signals.
-- Can timing be modeled without explicitly using timing, like the transition from rnn to transformer
-- How do self feedback loops/control signals fit into this? Mamba and TransformerFAM. 
-
-- Can GNN type architectures help in modelling time steps and emulate propogation of data between neurons?
-- Could you introduce learnable delay parameters between neurons, for weighting the message passing information.
-
-- Recent Yolov9 uses a an auxilary branch to propogate more information rich gradients, can multiple auxilary branches improve propogation flow?
-- learnable normalization, has an overseeing neuron for each layer that can be used as auxiallry back bone as well as to control short term activations based on longterm knowledge. Essentially like batch or layer norm. Learns during training, conditions based on all seen data till now.
-- LIKE in teacher student models, a slow but same architecture essentially is used to generate targets (pseudo self predictions).
-
-
-- Is masked prediction the optimal auxillary/pseudo task for learning multimodal information.
-
-- for i in range(rec):x=block(x)::essentially RNN
+1. Define a basic recursive logic unit, that has sparsity and WTA(winner Takes All) Mechanisms at all levels.
